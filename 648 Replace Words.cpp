@@ -76,20 +76,17 @@ public:
         }
 
         string ans = "";
-        string word = "";
+        istringstream iss(sentence);
+        string word;
 
-        for (const char c : sentence)
+        while (iss >> word)
         {
-            if (c == ' ')
-            {
-                ans += trie.find(word) + " ";
-                word.clear();
-            }
-            else
-                word.push_back(c);
+            ans += trie.find(word) + " ";
         }
 
-        ans += trie.find(word);
+        if (!ans.empty())
+            ans.pop_back();
+
         return ans;
     }
 };
