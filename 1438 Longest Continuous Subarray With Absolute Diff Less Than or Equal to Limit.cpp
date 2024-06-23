@@ -6,18 +6,31 @@ class Solution
 public:
     int longestSubarray(vector<int> &nums, int limit)
     {
-        multiset<int> mulS;
-        const int n = nums.size();
-        int ans = 0, l = 0, r = 0;
+        int ans = 1;
+        deque<int> minQ, maxQ;
+        auto end = nums.end();
 
-        while (r < n)
+        for (auto l = nums.begin(), r = nums.begin(); r != end; ++r)
         {
-            mulS.insert(nums[r++]);
+            while (!minQ.empty() && minQ.back() > *r)
+                minQ.pop_back();
+            minQ.push_back(*r);
 
-            while (*prev(mulS.end()) - *mulS.begin() > limit)
-                mulS.erase(mulS.find(nums[l++]));
+            while (!maxQ.empty() && maxQ.back() < *r)
+                maxQ.pop_back();
+            maxQ.push_back(*r);
 
-            ans = max(ans, r - l);
+            while (maxQ.front() - minQ.front() > limit)
+            {
+                if (minQ.front() == *l)
+                    minQ.pop_front();
+                if (maxQ.front() == *l)
+                    maxQ.pop_front();
+
+                ++l;
+            }
+
+            ans = max(ans, static_cast<int>(r - l + 1));
         }
 
         return ans;
