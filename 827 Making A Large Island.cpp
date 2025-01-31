@@ -10,7 +10,7 @@ public:
     {
         const int n = grid.size();
         vector<int> islandSize;
-        islandSize.reserve(n / 2);
+        islandSize.reserve(n * n);
         int label = 2, ans = 0;
 
         for (int i = 0; i < n; ++i)
